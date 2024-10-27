@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:my_rentals/model/house_model.dart';
 import 'package:my_rentals/model/message_model.dart';
@@ -11,6 +11,7 @@ class DatabaseService{
   static Database ? _db;
   static final DatabaseService instance = DatabaseService._constructor();
   final String _houseTableName = "houseTable";
+  // final String _configurationsTableName = "configurationsTable";
   final String _houseAccNoCol = "houseAccNo";
   final String _tenantNameCol = "tenantName";
   final String _buildingCol = "building";

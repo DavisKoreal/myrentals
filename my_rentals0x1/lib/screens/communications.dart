@@ -53,7 +53,29 @@ class _CommunicationsState extends State<Communications> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
+            GestureDetector(
+              onTap: (){
+                //show dialog saying you can now edit the days of messages sent
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Edit automatic days'),
+                      content: const Text('Do you want to edit the days of the month that messages are sent?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.pushNamed(context, '/edit_automatic_days');
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -64,18 +86,43 @@ class _CommunicationsState extends State<Communications> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'automatic days',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    'edit automatic days',
+                    style: TextStyle(color: Colors.white70, fontSize: 19),
                   ),
                   Text(
-                    "1st every month...",  // Replace with actual count
-                    style: TextStyle(color: Colors.greenAccent, fontSize: 15, fontWeight: FontWeight.bold),
+                    "1st...",  // Replace with actual count
+                    style: TextStyle(color: Colors.greenAccent, fontSize: 19, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
+            ),
+            
             // Total messages widget
-            Container(
+
+            GestureDetector(
+              onTap: (){
+                //show dialog saying you can now edit the days of messages sent
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Number of messages sent'),
+                      content: Text("$numberOfMessages messages have been sent to tenants in the past 30 days"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+              },
+              child: Container(
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -87,7 +134,7 @@ class _CommunicationsState extends State<Communications> {
                 children: [
                   const Text(
                     'Total Messages Sent',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle(color: Colors.white70, fontSize: 19),
                   ),
                   Text(
                     numberOfMessages,  // Replace with actual count
@@ -95,6 +142,7 @@ class _CommunicationsState extends State<Communications> {
                   ),
                 ],
               ),
+            ),
             ),
             // Scrollable list of messages
             Expanded(

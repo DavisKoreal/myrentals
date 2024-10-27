@@ -14,6 +14,7 @@ import 'package:my_rentals/screens/profile.dart';
 import 'package:my_rentals/screens/remove_edit_screen.dart';
 import 'package:my_rentals/screens/settings.dart';
 import 'package:my_rentals/screens/sign_out.dart';
+import 'package:my_rentals/screens/edit_automatic_days.dart';
 import 'package:flutter/material.dart';
 // import 'package:my_rentals/services/database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/unpaid_houses_screen':(context)=> const UnpaidHousesScreen(),
         '/remove_edit_screen':(context)=> const RemoveEditScreen(),
         '/update_tenant_details':(context)=> const UpdateTenantDetails(),
+        '/edit_automatic_days':(context)=> const EditAutomaticDaysPage(),
       },
       title: 'MyRentals',
       debugShowCheckedModeBanner: false,

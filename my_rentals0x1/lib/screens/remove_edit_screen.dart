@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_rentals/const/constant.dart';
 import 'package:my_rentals/model/search_results.dart';
@@ -174,16 +174,14 @@ class _RemoveEditScreenState extends State<RemoveEditScreen> {
                                       .isNotEmpty ? nameListSearch[index]
                                       .houseId : searchVector[index].houseId;
                                   _databaseService.deleteRow(houseId);
-                                  Navigator.of(context)
-                                      .pop(); // Close the dialog
+                                  Navigator.of(context).pop(); // Close the dialog
                                 },
                               ),
 
                               TextButton(
                                 child: const Text('No'),
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // Close the dialog
+                                  Navigator.of(context).pop(); // Close the dialog
                                 },
                               ),
                             ],
@@ -204,14 +202,13 @@ class _RemoveEditScreenState extends State<RemoveEditScreen> {
                               TextButton(
                                 child: const Text('No'),
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // Close the dialog
+                                  Navigator.of(context).pop(); // Close the dialog
                                 },
                               ),
                               TextButton(
                                 child: const Text('Yes'),
                                 onPressed: () {
-                                  // Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(context).pop(); // Close the dialog
                                   Navigator.pushNamed(context, '/update_tenant_details');
                                 },
                               ),
