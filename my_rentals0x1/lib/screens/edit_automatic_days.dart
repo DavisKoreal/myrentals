@@ -1,6 +1,7 @@
 // import material.dart
 
 import 'package:flutter/material.dart';
+import 'package:my_rentals/services/configuration_database.dart';
 
 class EditAutomaticDaysPage extends StatefulWidget {
   const EditAutomaticDaysPage({super.key});
@@ -11,11 +12,32 @@ class EditAutomaticDaysPage extends StatefulWidget {
 
 class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
 
+  final ConfigurationsDatabaseService _configurationsDatabaseService = ConfigurationsDatabaseService.instance;
   List<int> selectedDays = [];
+  String selectedDaysString = '...';
+  //create a string of all integers in the list selectedlist
 
+  //initState function
+  @override
+  void initState() {
+    super.initState();
+    _configurationsDatabaseService.getAutomaticDays().then((String value) =>
+    {
+      setState(() {
+        selectedDaysString = value;
+        //convert a string of the form [1,2,3] to a list of integers [1,2,3]
+        selectedDays = value.substring(1, value.length-1).split(',').map((e) => int.parse(e)).toList();
+      }),
+    }
+    );
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(' Automatic Days'),
@@ -37,16 +59,16 @@ class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
                 color: const Color(0xFF2A2A2A),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Selected days are',
                     style: TextStyle(color: Colors.white70, fontSize: 19),
                   ),
                   Text(
-                    "31, 30",  // Replace with actual count
-                    style: TextStyle(color: Colors.greenAccent, fontSize: 20, fontWeight: FontWeight.bold),
+                    selectedDaysString,  // Replace with actual count
+                    style: const TextStyle(color: Colors.greenAccent, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -65,13 +87,34 @@ class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
             GestureDetector(
               onTap: () {
 
-                setState(() {
-                  if (selectedDays.contains(index + 1)) {
+                bool contains = selectedDays.contains(index + 1);
+
+                if(contains){
+                  setState(() {
                     selectedDays.remove(index + 1);
-                  } else {
+                    selectedDaysString = selectedDays.toString();
+                  });
+                }
+
+                if(contains == false){
+                  setState(() {
                     selectedDays.add(index + 1);
-                  }
-                });
+                    selectedDaysString = selectedDays.toString();
+                  });
+                }
+
+                // setState(() {
+                //   if (selectedDays.contains(index + 1)) {
+                //     selectedDays.remove(index + 1);
+                //     //remove from selectedDaysString
+                //     // selectedDaysString = selectedDays.toString();
+                //   } 
+                //   else if (selectedDays.contains(index + 1) == false) {
+                //     selectedDays.add(index + 1);
+                //     //add to selectedDaysString
+                //     // selectedDaysString = selectedDays.toString();
+                //   }
+                // });
                 // selectedDays.add(index + 1);
                 //show dialog that you touched index i
                 // showDialog(
@@ -132,10 +175,11 @@ class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Submit Automatic Dates?'),
-                              content: const Text('The following dates will be set as automatic dates: 31, 30'),
+                              content: Text(
+                                "The following dates will be set as automatic dates: ${selectedDays.toString()}. \nAutomatic days are days that your clients are sent reminders to pay their rent."),
                               actions: <Widget>[
                                 TextButton(
-                                  child: const Text('No, I want to edit again'),
+                                  child: const Text('No, let me continue editing'),
                                   onPressed: () {
                                     Navigator.of(context).pop(); // Close the dialog
                                   },
@@ -144,6 +188,8 @@ class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
                                 TextButton(
                                   child: const Text('Yes, submit these dates'),
                                   onPressed: () {
+                                    _configurationsDatabaseService.insertAutomaticDays("0");
+                                    _configurationsDatabaseService.updateAutomaticDays(selectedDays.toString());
                                     Navigator.of(context).pop(); // Close the dialog
                                   },
                                 ),
@@ -152,11 +198,12 @@ class _EditAutomaticDaysPageState extends State<EditAutomaticDaysPage> {
                           },
                         );
                       },
-                      child: const Text('Submit automatic dates', style: TextStyle(color: Colors.black)),
+                      child: const Text('Confirm new automatic dates', style: TextStyle(color: Colors.black)),
                     ),
                   ),
                 ),
 
+                const SizedBox(height: 10.0,),
 
           ],
         ),

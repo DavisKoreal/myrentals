@@ -7,14 +7,15 @@ class ConfigurationsDatabaseService{
   static Database ? _db;
   static final ConfigurationsDatabaseService instance = ConfigurationsDatabaseService._constructor();
   final String _configurationsTableName = "configurationsTable";
-  final String _automaticDaysCol = "automaticDays";
+  final String _automaticDaysID = "automaticDays";
   final String _configurationName = "configurationName";
+  final String _actualConfiguration = "actualConfiguration";
 
   ConfigurationsDatabaseService._constructor();
 
   Future<Database> getDatabase() async{
     final databaseDirPath = await getDatabasesPath();
-    final databasePath = join(databaseDirPath, "fifth.db");
+    final databasePath = join(databaseDirPath, "configurations.db");
     final database = await openDatabase(
         databasePath,
         version: 1,
@@ -23,7 +24,7 @@ class ConfigurationsDatabaseService{
               '''
               CREATE TABLE $_configurationsTableName(
               $_configurationName TEXT PRIMARY KEY,
-              $_automaticDaysCol TEXT
+              $_actualConfiguration TEXT
               )
               '''
           );
@@ -38,34 +39,44 @@ class ConfigurationsDatabaseService{
     return _db!;
   }
 
-  void updateAutomaticDays(String newAutomaticDays) async{
+  void insertAutomaticDays(String newAutomaticDays) async{
     final db = await database;
     // String thisHouseId = h.building + h.houseAccNo;
     await db.insert(
         _configurationsTableName,
         {
-          _configurationName: "automaticDays",
-          _automaticDaysCol: newAutomaticDays,
+          _configurationName: _automaticDaysID,
+          _actualConfiguration: newAutomaticDays,
         }
     );
   }
 
-  Future<String> getAutomaticDays(String nameOfConfiguration) async {
+  Future<String> getAutomaticDays() async {
     final db = await database;
     final data = await db.query(
       _configurationsTableName,
-      columns: [_automaticDaysCol, _configurationName],
+      columns: [_actualConfiguration, _configurationName],
       where: '$_configurationName = ?',
-      whereArgs: [nameOfConfiguration],
+      whereArgs: [_automaticDaysID],
     );
 
-    var automaticDays = data[0][_automaticDaysCol] as String;
+    var automaticDays = data[0][_actualConfiguration] as String;
     return automaticDays;
   }
 
   void close() async{
     final db = await database;
     db.close();
+  }
+
+   void updateAutomaticDays(String newAutomaticDays) async {
+    final db = await database;
+      await db.update(_configurationsTableName,
+      {
+        _actualConfiguration: newAutomaticDays,
+      },
+      where: '$_configurationName = ?', whereArgs: [_automaticDaysID]);
+
   }
 
 }

@@ -3,7 +3,7 @@ import 'package:my_rentals/widgets/activity_details_card.dart';
 //import 'package:fitness_dashboard_ui/widgets/bar_graph_widget.dart';
 import 'package:my_rentals/widgets/header_widget.dart';
 import 'package:my_rentals/widgets/hello_landlord.dart';
-import 'package:my_rentals/widgets/line_chart_card.dart';
+// import 'package:my_rentals/widgets/line_chart_card.dart';
 // import 'package:my_rentals/widgets/summary_widget.dart';
 import 'package:flutter/material.dart';
 
