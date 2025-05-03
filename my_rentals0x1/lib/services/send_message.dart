@@ -2,7 +2,7 @@ import 'package:africas_talking/africas_talking.dart';
 // import 'package:http/http.dart' as http;
 
 void sendMessage(String messageToSend, List<String> contactsToSendTo) {
-  const apikey = "atsk_e68f8d6a361bcc5e34a10eeff7fd4b97bf5600da98b6d8d1da2693f96338f265a2e401d3";
+  const apikey = " enter api key";
   var africasTalking = AfricasTalking("vivaShakuMessageSender", apikey);
   africasTalking.isLive = true;
 
